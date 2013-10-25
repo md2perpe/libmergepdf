@@ -51,12 +51,12 @@ class Merger
      *
      * Note that your PDFs are merged in the order that you add them
      *
-     * @param  string    $pdf
-     * @param  Pages     $pages
+     * @param  string           $pdf
+     * @param  Pages|string     $pages
      * @return void
      * @throws Exception if unable to create temporary file
      */
-    public function addRaw($pdf, Pages $pages = null)
+    public function addRaw($pdf, $pages = null)
     {
         assert('is_string($pdf)');
 
@@ -75,13 +75,13 @@ class Merger
      *
      * Note that your PDFs are merged in the order that you add them
      *
-     * @param  string    $fname
-     * @param  Pages     $pages
-     * @param  bool      $cleanup Flag if file should be deleted after merging
+     * @param  string           $fname
+     * @param  Pages|string     $pages
+     * @param  bool             $cleanup Flag if file should be deleted after merging
      * @return void
      * @throws Exception If $fname is not a valid file
      */
-    public function addFromFile($fname, Pages $pages = null, $cleanup = false)
+    public function addFromFile($fname, $pages = null, $cleanup = false)
     {
         assert('is_string($fname)');
         assert('is_bool($cleanup)');
@@ -91,8 +91,8 @@ class Merger
             throw new Exception($msg);
         }
 
-        if (!$pages) {
-            $pages = new Pages();
+        if (!($pages instanceof Pages)) {
+            $pages = new Pages((string)$pages);
         }
 
         $this->files[] = array($fname, $pages, $cleanup);
